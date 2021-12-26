@@ -22,8 +22,7 @@
             "extends": [
                 "plugin:@angular-eslint/ng-cli-compat",
                 "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
-                "plugin:@angular-eslint/template/process-inline-templates",
-                "eslist:recommended"
+                "plugin:@angular-eslint/template/process-inline-templates"
             ],
             "rules": {
                 "prefer-arrow/prefer-arrow-functions": 0,
@@ -45,10 +44,7 @@
             "extends": [
                 "plugin:@angular-eslint/template/recommended"
             ],
-            "rules": {
-                "semi": 0,
-                "@typescript-eslint/semi": []
-            }
+            "rules": {}
         }
     ]
 }
