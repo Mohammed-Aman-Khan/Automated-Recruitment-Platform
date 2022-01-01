@@ -1,29 +1,24 @@
-import Credential from '../schemas/Credential.schema'
 import * as mongoose from 'mongoose'
+import Credential from '../schemas/Credential.schema'
+import AuthWorkerInterface, { ConnectionStatus, UserId, UserType, Password, LoginResponse, LogoutResponse, RegisterResponse } from '../types/AuthWorker'
 
-class AuthWorker {
+class AuthWorker implements AuthWorkerInterface {
 
-    connected = false
+    connected: ConnectionStatus = false
 
     constructor() {
-        mongoose.connect(process.env.DB_URL)
-            .then(() => {
-                this.connected = true
-            })
-            .catch(err => {
-                throw new Error(err.message)
-            })
-    }
-
-    login(userId: string, password: string) {
 
     }
 
-    logout(userId: string) {
+    login(userId: UserId, password: Password) {
 
     }
 
-    register(userId: string, password: string, userType: 'JOB_SEEKER' | 'EMPLOYER') {
+    logout(userId: UserId) {
+
+    }
+
+    register(userId: UserId, password: Password, userType: UserType) {
 
     }
 
