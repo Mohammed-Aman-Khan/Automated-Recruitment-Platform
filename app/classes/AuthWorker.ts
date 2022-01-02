@@ -1,7 +1,10 @@
 import Credential, { CredentialInterface } from '../schemas/Credential.schema'
+import JobSeeker, { JobSeekerInterface } from '../schemas/JobSeeker.schema'
+import Employer, { EmployerInterface } from '../schemas/Employer.schema'
 import { UserId, UserType, Password, LoginResponse, RegisterResponse } from '../types/AuthWorker'
 import { decrypt } from '../util/crypt'
 import { isEqual } from 'lodash'
+import { Document } from 'mongoose'
 
 interface AuthWorkerInterface {
     login: (userId: UserId, password: Password) => Promise<LoginResponse>,
@@ -18,20 +21,19 @@ class AuthWorker implements AuthWorkerInterface {
      */
     login(userId: UserId, password: Password): Promise<LoginResponse> {
         return new Promise<LoginResponse>((resolve, reject) => {
+            // Querying the database
             Credential
                 .findOne({ userId })
                 .then((result: CredentialInterface | null) => {
                     if (result) { // If User found
-                        const decryptedPassword = decrypt(result.password, result.key)
+                        let decryptedPassword = decrypt(result.password, result.key)
                         if (!isEqual(password, decryptedPassword)) // If password does not match
                             reject({
                                 success: false,
                                 error: new Error("Invalid Credentials")
                             })
                         else // If password matches
-                            resolve({
-                                success: true
-                            })
+                            resolve({ success: true })
                     }
                     else { // If User not found
                         reject({
@@ -58,9 +60,54 @@ class AuthWorker implements AuthWorkerInterface {
      * @returns {Promise<RegisterResponse>} Promise<RegisterResponse>
      */
     register(userId: UserId, password: Password, userType: UserType): Promise<RegisterResponse> {
+        return new Promise<RegisterResponse>((resolve, reject) => {
+            // Check whether an account with the same UserId exists
+            // Querying the database
+            Credential
+                .findOne({ userId })
+                .then((result: CredentialInterface | null) => {
+                    if (result) { // If User found
+                        reject({
+                            success: false,
+                            error: new Error("User exists")
+                        })
+                    }
+                    else { // If User not found
+                        let newUser: Document<JobSeekerInterface | EmployerInterface>
+                        switch (userType) {
+                            case 'JOB_SEEKER':
+                                newUser = new JobSeeker({
 
+                                })
+                                newUser
+                                    .save()
+                                    .then(() => { resolve({ success: true }) })
+                                break
+                            case 'EMPLOYER':
+                                newUser = new Employer({
+
+                                })
+                                newUser
+                                    .save()
+                                    .then(() => { resolve({ success: true }) })
+                                break
+                            default:
+                                reject({
+                                    success: false,
+                                    error: new Error("Invalid User Type")
+                                })
+                                break
+                        }
+                    }
+                })
+                .catch((err: Error) => {
+                    reject({
+                        success: false,
+                        error: err
+                    })
+                })
+        })
     }
-
 }
 
 export default AuthWorker

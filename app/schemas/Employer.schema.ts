@@ -13,4 +13,6 @@ const schema = new Schema<EmployerInterface>({
 // Create a Model.
 const Employer = model<EmployerInterface>('Employer', schema)
 
+export { EmployerInterface }
+
 export default Employer

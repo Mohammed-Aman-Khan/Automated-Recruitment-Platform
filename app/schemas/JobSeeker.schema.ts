@@ -13,4 +13,6 @@ const schema = new Schema<JobSeekerInterface>({
 // Create a Model.
 const JobSeeker = model<JobSeekerInterface>('JobSeeker', schema)
 
+export { JobSeekerInterface }
+
 export default JobSeeker
