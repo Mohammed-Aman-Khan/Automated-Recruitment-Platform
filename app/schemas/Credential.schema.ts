@@ -4,6 +4,7 @@ import { Schema, model } from 'mongoose'
 interface CredentialInterface {
     userId: string,
     password: string,
+    key: string,
     userType: string,
 }
 
@@ -16,5 +17,7 @@ const schema = new Schema<CredentialInterface>({
 
 // Create a Model.
 const Credential = model<CredentialInterface>('Credential', schema)
+
+export { CredentialInterface }
 
 export default Credential

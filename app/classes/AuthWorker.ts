@@ -1,24 +1,63 @@
-import * as mongoose from 'mongoose'
-import Credential from '../schemas/Credential.schema'
-import AuthWorkerInterface, { ConnectionStatus, UserId, UserType, Password, LoginResponse, LogoutResponse, RegisterResponse } from '../types/AuthWorker'
+import Credential, { CredentialInterface } from '../schemas/Credential.schema'
+import { UserId, UserType, Password, LoginResponse, RegisterResponse } from '../types/AuthWorker'
+import { decrypt } from '../util/crypt'
+import { isEqual } from 'lodash'
+
+interface AuthWorkerInterface {
+    login: (userId: UserId, password: Password) => Promise<LoginResponse>,
+    register: (userId: UserId, password: Password, userType: UserType) => Promise<RegisterResponse>,
+}
 
 class AuthWorker implements AuthWorkerInterface {
 
-    connected: ConnectionStatus = false
+    /**
+     * Authenticates and Logs the User in.
+     * @param {UserId} userId
+     * @param {Password} password
+     * @returns {Promise<LoginResponse>} Promise<LoginResponse>
+     */
+    login(userId: UserId, password: Password): Promise<LoginResponse> {
+        return new Promise<LoginResponse>((resolve, reject) => {
+            Credential
+                .findOne({ userId })
+                .then((result: CredentialInterface | null) => {
+                    if (result) { // If User found
+                        const decryptedPassword = decrypt(result.password, result.key)
+                        if (!isEqual(password, decryptedPassword)) // If password does not match
+                            reject({
+                                success: false,
+                                error: new Error("Invalid Credentials")
+                            })
+                        else // If password matches
+                            resolve({
+                                success: true
+                            })
+                    }
+                    else { // If User not found
+                        reject({
+                            success: false,
+                            error: new Error("User does not exist")
+                        })
+                    }
 
-    constructor() {
-
+                })
+                .catch((err: Error) => {
+                    reject({
+                        success: false,
+                        error: err
+                    })
+                })
+        })
     }
 
-    login(userId: UserId, password: Password) {
-
-    }
-
-    logout(userId: UserId) {
-
-    }
-
-    register(userId: UserId, password: Password, userType: UserType) {
+    /**
+     * Registers a new User.
+     * @param {UserId} userId
+     * @param {Password} password
+     * @param {UserType} userType
+     * @returns {Promise<RegisterResponse>} Promise<RegisterResponse>
+     */
+    register(userId: UserId, password: Password, userType: UserType): Promise<RegisterResponse> {
 
     }
 
