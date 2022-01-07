@@ -12,26 +12,27 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 
 import { AppComponent } from './app.component'
+import { LoginRegisterComponent } from './login-register/login-register.component'
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json')
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, LoginRegisterComponent],
     imports: [
         BrowserModule,
         FormsModule,
         HttpClientModule,
         CoreModule,
         SharedModule,
-        // AppRoutingModule,
+        AppRoutingModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
                 useFactory: httpLoaderFactory,
                 deps: [HttpClient]
             }
-        })
+        }),
     ],
     providers: [],
     bootstrap: [AppComponent]
