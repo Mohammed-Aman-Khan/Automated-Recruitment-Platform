@@ -1,6 +1,6 @@
 {
-    "name": "angular-electron",
-    "version": "10.4.1",
+    "name": "automated-recruitment-platform-backend",
+    "version": "1.0.0",
     "main": "main.js",
     "private": true,
     "dependencies": {
