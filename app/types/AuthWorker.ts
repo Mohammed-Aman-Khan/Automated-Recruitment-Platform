@@ -1,6 +1,6 @@
 type UserId = string
 type Password = string
-type UserType = 'JOB_SEEKER' | 'EMPLOYER'
+type UserType = 'JOBSEEKER' | 'EMPLOYER'
 
 type LoginResponse = {
     success: boolean,

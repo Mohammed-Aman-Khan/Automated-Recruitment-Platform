@@ -19,7 +19,7 @@ class AuthWorker implements AuthWorkerInterface {
      * @param {Password} password
      * @returns {Promise<LoginResponse>} Promise<LoginResponse>
      */
-    login(userId: UserId, password: Password): Promise<LoginResponse> {
+    login (userId: UserId, password: Password): Promise<LoginResponse> {
         return new Promise<LoginResponse>((resolve, reject) => {
             // Querying the database
             Credential
@@ -59,7 +59,7 @@ class AuthWorker implements AuthWorkerInterface {
      * @param {UserType} userType
      * @returns {Promise<RegisterResponse>} Promise<RegisterResponse>
      */
-    register(userId: UserId, password: Password, userType: UserType): Promise<RegisterResponse> {
+    register (userId: UserId, password: Password, userType: UserType): Promise<RegisterResponse> {
         return new Promise<RegisterResponse>((resolve, reject) => {
             // Check whether an account with the same UserId exists
             // Querying the database
@@ -75,21 +75,17 @@ class AuthWorker implements AuthWorkerInterface {
                     else { // If User not found
                         let newUser: Document<JobSeekerInterface | EmployerInterface>
                         switch (userType) {
-                            case 'JOB_SEEKER':
+                            case 'JOBSEEKER':
                                 newUser = new JobSeeker({
 
                                 })
-                                newUser
-                                    .save()
-                                    .then(() => { resolve({ success: true }) })
+                                return newUser.save()
                                 break
                             case 'EMPLOYER':
                                 newUser = new Employer({
 
                                 })
-                                newUser
-                                    .save()
-                                    .then(() => { resolve({ success: true }) })
+                                return newUser.save()
                                 break
                             default:
                                 reject({
@@ -100,6 +96,7 @@ class AuthWorker implements AuthWorkerInterface {
                         }
                     }
                 })
+                .then(() => resolve({ success: true }))
                 .catch((err: Error) => {
                     reject({
                         success: false,
