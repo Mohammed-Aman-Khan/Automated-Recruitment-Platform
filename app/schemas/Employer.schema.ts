@@ -2,14 +2,14 @@ import * as mongoose from 'mongoose'
 
 // Interface representing a document in MongoDB.
 interface EmployerInterface extends mongoose.Document {
-    organization: string,
+    employerName: string,
     email: string,
     branch: string,
 }
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<EmployerInterface>({
-    organization: String,
+    employerName: String,
     email: String,
     branch: String,
 })

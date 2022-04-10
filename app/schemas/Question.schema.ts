@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 
 // Interface representing a document in MongoDB.
-interface QuestionSetInterface extends mongoose.Document {
+interface QuestionInterface extends mongoose.Document {
     employerId: mongoose.Types.ObjectId,
     type: 'VERBAL' | 'NONVERBAL',
     topic: string,
@@ -12,7 +12,7 @@ interface QuestionSetInterface extends mongoose.Document {
 }
 
 // Schema corresponding to the document interface.
-const schema = new mongoose.Schema<QuestionSetInterface>({
+const schema = new mongoose.Schema<QuestionInterface>({
     employerId: mongoose.Schema.Types.ObjectId,
     type: String,
     topic: String,
@@ -23,8 +23,8 @@ const schema = new mongoose.Schema<QuestionSetInterface>({
 })
 
 // Create a Model.
-const QuestionSet = mongoose.models.QuestionSet || mongoose.model<QuestionSetInterface>('QuestionSet', schema)
+const Question = mongoose.models.Question || mongoose.model<QuestionInterface>('Question', schema)
 
-export { QuestionSetInterface }
+export { QuestionInterface }
 
-export default QuestionSet
+export default Question
