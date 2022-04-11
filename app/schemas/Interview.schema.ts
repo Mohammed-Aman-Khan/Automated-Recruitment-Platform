@@ -1,12 +1,5 @@
 import * as mongoose from 'mongoose'
-
-// Interface representing a document in MongoDB.
-interface InterviewInterface extends mongoose.Document {
-    candidateId: mongoose.Types.ObjectId,
-    jobId: mongoose.Types.ObjectId,
-    questions: mongoose.Types.ObjectId[],
-    report: mongoose.Schema.Types.Mixed,
-}
+import { InterviewInterface } from '../interfaces/Interview.interface'
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<InterviewInterface>({
@@ -18,7 +11,5 @@ const schema = new mongoose.Schema<InterviewInterface>({
 
 // Create a Model.
 const Interview = mongoose.models.Interview || mongoose.model<InterviewInterface>('Interview', schema)
-
-export { InterviewInterface }
 
 export default Interview

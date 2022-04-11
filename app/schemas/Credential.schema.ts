@@ -1,16 +1,9 @@
 import * as mongoose from 'mongoose'
-
-// Interface representing a document in MongoDB.
-interface CredentialInterface extends mongoose.Document {
-    userId: string,
-    password: string,
-    key: string,
-    userType: string,
-}
+import { CredentialInterface } from '../interfaces/Credential.interface'
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<CredentialInterface>({
-    userId: String,
+    emailId: String,
     password: String,
     key: String,
     userType: String,
@@ -18,7 +11,5 @@ const schema = new mongoose.Schema<CredentialInterface>({
 
 // Create a Model.
 const Credential = mongoose.models.Credential || mongoose.model<CredentialInterface>('Credential', schema)
-
-export { CredentialInterface }
 
 export default Credential

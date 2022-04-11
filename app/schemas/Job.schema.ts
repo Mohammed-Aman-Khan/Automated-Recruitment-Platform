@@ -1,18 +1,5 @@
 import * as mongoose from 'mongoose'
-
-// Interface representing a document in MongoDB.
-interface JobInterface extends mongoose.Document {
-    role: string,
-    description: string,
-    requiredExperience: {
-        min: number,
-        max: number,
-    },
-    requiredSkills: string[],
-    type: 'PART TIME' | 'FULL TIME' | 'INTERNSHIP',
-    eligibleCandidates: mongoose.Types.ObjectId[],
-    interviewsCompleted: mongoose.Types.ObjectId[],
-}
+import { JobInterface } from '../interfaces/Job.interface'
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<JobInterface>({
@@ -30,7 +17,5 @@ const schema = new mongoose.Schema<JobInterface>({
 
 // Create a Model.
 const Job = mongoose.models.Job || mongoose.model<JobInterface>('Job', schema)
-
-export { JobInterface }
 
 export default Job

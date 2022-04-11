@@ -1,22 +1,14 @@
 import * as mongoose from 'mongoose'
-
-// Interface representing a document in MongoDB.
-interface EmployerInterface extends mongoose.Document {
-    employerName: string,
-    email: string,
-    branch: string,
-}
+import { EmployerInterface } from '../interfaces/Employer.interface'
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<EmployerInterface>({
-    employerName: String,
+    name: String,
     email: String,
     branch: String,
 })
 
 // Create a Model.
 const Employer = mongoose.models.Employer || mongoose.model<EmployerInterface>('Employer', schema)
-
-export { EmployerInterface }
 
 export default Employer
