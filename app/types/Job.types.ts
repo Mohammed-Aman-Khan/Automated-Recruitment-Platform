@@ -13,6 +13,6 @@ export type RequiredSkill = string
 
 export type Type = 'PART TIME' | 'FULL TIME' | 'INTERNSHIP'
 
-export type EligibleCandidate = mongoose.Types.ObjectId
+export type AppliedCandidate = mongoose.Types.ObjectId
 
 export type InterviewCompleted = mongoose.Types.ObjectId

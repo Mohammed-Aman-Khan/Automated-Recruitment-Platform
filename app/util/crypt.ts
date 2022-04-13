@@ -5,7 +5,7 @@ export const encrypt = (string: string): { encryptedString: string, key: string 
     const key = generateKey()
     return {
         key,
-        encryptedString: AES.encrypt(string, key).toString()
+        encryptedString: AES.encrypt(string, key).toString(),
     }
 }
 

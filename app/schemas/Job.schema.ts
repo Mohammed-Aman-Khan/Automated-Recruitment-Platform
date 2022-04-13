@@ -11,7 +11,7 @@ const schema = new mongoose.Schema<JobInterface>({
     },
     requiredSkills: [ String ],
     type: String,
-    eligibleCandidates: [ mongoose.Schema.Types.ObjectId ],
+    appliedCandidates: [ mongoose.Schema.Types.ObjectId ],
     interviewsCompleted: [ mongoose.Schema.Types.ObjectId ],
 })
 

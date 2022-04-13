@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import { Role, Description, RequiredExperience, RequiredSkill, Type, EligibleCandidate, InterviewCompleted } from '../types/Job.types'
+import { Role, Description, RequiredExperience, RequiredSkill, Type, AppliedCandidate, InterviewCompleted } from '../types/Job.types'
 
 export interface JobInterface extends mongoose.Document {
     role: Role,
@@ -7,6 +7,6 @@ export interface JobInterface extends mongoose.Document {
     requiredExperience: RequiredExperience,
     requiredSkills: RequiredSkill[],
     type: Type,
-    eligibleCandidates: EligibleCandidate[],
+    appliedCandidates: AppliedCandidate[],
     interviewsCompleted: InterviewCompleted[],
 }

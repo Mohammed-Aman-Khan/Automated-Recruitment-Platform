@@ -3,7 +3,7 @@ import { CredentialInterface } from '../interfaces/Credential.interface'
 
 // Schema corresponding to the document interface.
 const schema = new mongoose.Schema<CredentialInterface>({
-    emailId: String,
+    email: String,
     password: String,
     key: String,
     userType: String,

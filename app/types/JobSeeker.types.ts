@@ -40,4 +40,4 @@ export type Skill = string
 
 export type CurrentlyEmployed = boolean
 
-export type InterestedIn = 'PART TIME' | 'FULL TIME' | 'INTERNSHIP'
+export type Interests = 'PART TIME' | 'FULL TIME' | 'INTERNSHIP'

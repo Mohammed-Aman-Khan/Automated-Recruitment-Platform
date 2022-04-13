@@ -11,13 +11,17 @@ import { AppRoutingModule } from './app-routing.module'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 
-import { AppComponent } from './app.component'
+import { AppComponent } from './app.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { JobseekerModuleComponent } from './jobseeker-module/jobseeker-module.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component'
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json')
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [ AppComponent, LandingPageComponent, JobseekerModuleComponent, LoginPageComponent, RegisterPageComponent ],
     imports: [
         BrowserModule,
         FormsModule,
@@ -29,11 +33,11 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
             loader: {
                 provide: TranslateLoader,
                 useFactory: httpLoaderFactory,
-                deps: [HttpClient]
+                deps: [ HttpClient ]
             }
         }),
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [ AppComponent ]
 })
 export class AppModule { }

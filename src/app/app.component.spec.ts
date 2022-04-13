@@ -7,9 +7,9 @@ import { ElectronService } from './core/services';
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      providers: [ElectronService],
-      imports: [RouterTestingModule, TranslateModule.forRoot()]
+      declarations: [ AppComponent ],
+      providers: [ ElectronService ],
+      imports: [ RouterTestingModule, TranslateModule.forRoot() ]
     }).compileComponents();
   }));
 

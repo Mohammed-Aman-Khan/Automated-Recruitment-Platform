@@ -41,7 +41,7 @@ const schema = new mongoose.Schema<JobSeekerInterface>({
     ],
     skills: [ String ],
     currentlyEmployed: Boolean,
-    interestedIn: [ String ],
+    interests: [ String ],
 })
 
 // Create a Model.
