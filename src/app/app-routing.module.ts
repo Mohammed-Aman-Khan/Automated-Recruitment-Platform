@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { LandingPageComponent } from './landing-page/landing-page.component'
 import { LoginPageComponent } from './login-page/login-page.component'
+import { RegisterPageComponent } from './register-page/register-page.component'
 import { PageNotFoundComponent } from './shared/components'
 
 const routes: Routes = [
@@ -19,8 +20,12 @@ const routes: Routes = [
         component: LandingPageComponent,
     },
     {
-        path: '/login',
+        path: 'login',
         component: LoginPageComponent,
+    },
+    {
+        path: 'register',
+        component: RegisterPageComponent,
     },
     {
         path: '**',

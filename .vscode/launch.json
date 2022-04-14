@@ -10,7 +10,7 @@
             "request": "attach",
             "port": 9876,
             "url": "http://localhost:4200",
-            "sourceMaps": true,  
+            "sourceMaps": true,
             "timeout": 10000,
             "trace": "verbose",
             "sourceMapPathOverrides": {
@@ -40,7 +40,10 @@
     "compounds": [
         {
             "name": "Application Debug",
-            "configurations": [ "Renderer", "Main" ]
+            "configurations": [
+                "Renderer",
+                "Main"
+            ]
         }
     ]
 }
