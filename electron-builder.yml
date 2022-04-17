@@ -1,0 +1,12 @@
+appId: com.app.arp
+productName: Joboryx
+copyright: Copyright © 2022 Mohammed Aman Khan
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
