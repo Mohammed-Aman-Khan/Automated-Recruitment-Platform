@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 export default () => {
     return (
@@ -6,7 +7,15 @@ export default () => {
             <Head>
             </Head>
             <body style={{ padding: 0, margin: 0 }}>
-                <Main />
+                <ThemeProvider
+                    theme={createTheme({
+                        palette: {
+                            mode: 'dark',
+                        }
+                    })}
+                >
+                    <Main />
+                </ThemeProvider>
                 <NextScript />
             </body>
         </Html>
