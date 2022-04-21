@@ -15,9 +15,9 @@ if (isProd) {
     app.setPath('userData', `${ app.getPath('userData') } (development)`)
 }
 
-mongoose
-    .connect(`${ process.env.DB_URL }`, { useNewUrlParser: true })
-    .then(() => {
+// mongoose
+//     .connect(`mongodb+srv://electron-app:electron-app@arp-cluster.89m0r.mongodb.net/arp?retryWrites=true&w=majority`, { useNewUrlParser: true })
+//     .then(() => {
         (async () => {
             await app.whenReady()
 
@@ -31,13 +31,12 @@ mongoose
             } else {
                 const port = process.argv[ 2 ]
                 await mainWindow.loadURL(`http://localhost:${ port }/`)
-                mainWindow.webContents.openDevTools()
             }
         })()
-    })
-    .catch(err => {
-        dialog.showErrorBox('Error', err.message)
-    })
+    // })
+    // .catch(err => {
+    //     dialog.showErrorBox('Error', err.message)
+    // })
 
 app.on('window-all-closed', () => {
     app.quit()

@@ -3,14 +3,18 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { useRouter } from 'next/router'
 import { useRef, useEffect } from 'react'
 import { AUTH_EVENTS } from '../../util/events/auth'
 import { useDispatch } from 'react-redux'
 import { setAuth } from '../../redux/AuthSlice'
 import isEqual from 'lodash/isEqual'
+import { useRouter } from 'next/router'
+import Fab from '@mui/material/Fab'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 export default () => {
+
+    const router = useRouter()
 
     const { query, replace } = useRouter()
     const dispatch = useDispatch()
@@ -20,25 +24,26 @@ export default () => {
 
     const login = async e => {
         e.preventDefault()
-        try {
-            const { status, error } = await AUTH_EVENTS.LOGIN({
-                email: emailRef.current.value,
-                passwsord: passwordRef.current.value,
-                userType,
-            })
-            if (status) {
-                dispatch(setAuth({
-                    email: emailRef.current.value,
-                    passwsord: passwordRef.current.value,
-                    userType,
-                }))
-                replace(userType === 'JOBSEEKER' ? '/jobseeker' : '/employer')
-            }
-            else alert(error)
-        }
-        catch (err) {
-            console.log(err)
-        }
+        // try {
+        //     const { status, error } = await AUTH_EVENTS.LOGIN({
+        //         email: emailRef.current.value,
+        //         passwsord: passwordRef.current.value,
+        //         userType,
+        //     })
+        //     if (status) {
+        //         dispatch(setAuth({
+        //             email: emailRef.current.value,
+        //             passwsord: passwordRef.current.value,
+        //             userType,
+        //         }))
+        //         replace(userType === 'JOBSEEKER' ? '/jobseeker' : '/employer')
+        //     }
+        //     else alert(error)
+        // }
+        // catch (err) {
+        //     console.log(err)
+        // }
+        router.replace('/' + String(query.userType))
     }
 
     useEffect(() => {
@@ -83,6 +88,10 @@ export default () => {
                             type="password"
                             ref={passwordRef}
                         />
+                        <br /><br />
+                        <Button onClick={() => router.push('/register/' + String(query.userType))} variant="text" style={{ float:'right' }}>
+                            Create Account
+                        </Button>
                         <br /><br /><br />
                         <Button fullWidth color="primary" size="large" variant="contained" type="submit">
                             Login
@@ -91,5 +100,12 @@ export default () => {
                 </div>
             </Paper>
         </Grid>
+        <div
+        style={{ position:'absolute', top:10, left:10 }}
+        >
+            <Fab size="small" color="default" onClick={() => router.back()}>
+                <ArrowBackIcon />
+            </Fab>
+        </div>
     </>
 }
