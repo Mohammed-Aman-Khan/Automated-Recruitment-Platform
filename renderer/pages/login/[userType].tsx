@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { setAuth } from '../../redux/AuthSlice'
 import isEqual from 'lodash/isEqual'
 import { useRouter } from 'next/router'
-import Fab from '@mui/material/Fab'
+import IconButton from '@mui/material/IconButton'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 export default () => {
@@ -103,9 +103,9 @@ export default () => {
         <div
         style={{ position:'absolute', top:10, left:10 }}
         >
-            <Fab size="small" color="default" onClick={() => router.back()}>
+            <IconButton size="small" color="default" onClick={() => router.back()}>
                 <ArrowBackIcon />
-            </Fab>
+            </IconButton>
         </div>
     </>
 }

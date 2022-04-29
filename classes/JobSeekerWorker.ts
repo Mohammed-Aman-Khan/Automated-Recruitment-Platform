@@ -11,15 +11,11 @@ class JobSeekerWorker implements JobSeekerWorkerInterface {
 
     async getJobs (authId: MongoObjectId, filter?: JobFilter): Promise<GetJobsResponse> {
         try {
-
-
-
             return {
                 status: true,
                 jobs: []
     
-            }
-            
+            }            
         } catch (error) {
             return {
                 status: false,
@@ -29,21 +25,20 @@ class JobSeekerWorker implements JobSeekerWorkerInterface {
         }
     }
 
-// Facing error here
-    // async getMyDetails (authId: MongoObjectId, email: EmailId): Promise<GetMyDetailsResponse> {
-    //     try {
-    //         return {
-    //             data: JobSeekerInterface,
-    //             status: true
-    //         }
-    //     } catch (error) {
-    //         return {
-    //             error: error.message,
-    //             status: false,
-    //             data: JobSeekerInterface
-    //         }
-    //     }
-    // }
+    async getMyDetails (authId: MongoObjectId, email: EmailId): Promise<GetMyDetailsResponse> {
+        try {
+            const result = await JobSeeker.findOne({ _id: authId })
+            return {
+                status:true,
+                data:result,
+            } 
+        } catch (error) {
+            return {
+                status:false,
+                error:error.message,
+            }
+        }
+    }
 
     async addQualification (authId: MongoObjectId, newQualification: Qualification): Promise<BasicResponse> {
         try {

@@ -16,7 +16,7 @@ export interface GetJobsResponse extends BasicResponse {
 }
 
 export interface GetMyDetailsResponse extends BasicResponse {
-    data: JobSeekerInterface,
+    data?: JobSeekerInterface,
 }
 
 export interface JobSeekerWorkerInterface {
