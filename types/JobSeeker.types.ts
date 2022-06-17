@@ -1,10 +1,10 @@
-import * as mongoose from 'mongoose'
-
 export type Name = string
 
 export type EmailId = string
 
 export type DateOfBirth = string
+
+export type ResumeLink = string
 
 export type Qualification = {
     level: String,

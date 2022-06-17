@@ -8,9 +8,11 @@ import { AUTH_EVENTS } from '../../util/events/auth'
 import { useDispatch } from 'react-redux'
 import { setAuth } from '../../redux/AuthSlice'
 import isEqual from 'lodash/isEqual'
+import capitalize from 'lodash/capitalize'
 import { useRouter } from 'next/router'
 import IconButton from '@mui/material/IconButton'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import Head from 'next/head'
 
 export default () => {
 
@@ -18,7 +20,7 @@ export default () => {
 
     const { query, replace } = useRouter()
     const dispatch = useDispatch()
-    const userType = query.userType ? String(query.userType).toUpperCase() : ''
+    const userType = query.userType ? String( query.userType ).toUpperCase() : ''
     const emailRef = useRef()
     const passwordRef = useRef()
 
@@ -43,16 +45,21 @@ export default () => {
         // catch (err) {
         //     console.log(err)
         // }
-        router.replace('/' + String(query.userType))
+        router.replace( '/' + String( query.userType ) )
     }
 
-    useEffect(() => {
-        if (Boolean(userType) && !isEqual(userType, 'JOBSEEKER') && !isEqual(userType, 'EMPLOYER')) {
-            replace('/')
+    useEffect( () => {
+        if ( Boolean( userType ) && !isEqual( userType, 'JOBSEEKER' ) && !isEqual( userType, 'EMPLOYER' ) ) {
+            replace( '/' )
         }
-    }, [ userType ])
+    }, [ userType ] )
 
     return <>
+        <Head>
+            <title>
+                {capitalize( userType )} Login
+            </title>
+        </Head>
         <Grid
             container
             alignItems='center'
@@ -89,7 +96,7 @@ export default () => {
                             ref={passwordRef}
                         />
                         <br /><br />
-                        <Button onClick={() => router.push('/register/' + String(query.userType))} variant="text" style={{ float:'right' }}>
+                        <Button onClick={() => router.push( '/register/' + String( query.userType ) )} variant="text" style={{ float: 'right' }}>
                             Create Account
                         </Button>
                         <br /><br /><br />
@@ -101,7 +108,7 @@ export default () => {
             </Paper>
         </Grid>
         <div
-        style={{ position:'absolute', top:10, left:10 }}
+            style={{ position: 'absolute', top: 10, left: 10 }}
         >
             <IconButton size="small" color="default" onClick={() => router.back()}>
                 <ArrowBackIcon />

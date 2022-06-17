@@ -5,10 +5,10 @@ import {
 } from 'electron'
 import Store from 'electron-store'
 
-export default (windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow => {
+export default ( windowName: string, options: BrowserWindowConstructorOptions ): BrowserWindow => {
     const key = 'window-state'
     const name = `window-state-${ windowName }`
-    const store = new Store({ name })
+    const store = new Store( { name } )
     const defaultSize = {
         width: options.width,
         height: options.height,
@@ -16,7 +16,7 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
     let state = {}
     let win
 
-    const restore = () => store.get(key, defaultSize)
+    const restore = () => store.get( key, defaultSize )
 
     const getCurrentPosition = () => {
         const position = win.getPosition()
@@ -29,7 +29,7 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
         }
     }
 
-    const windowWithinBounds = (windowState, bounds) => {
+    const windowWithinBounds = ( windowState, bounds ) => {
         return (
             windowState.x >= bounds.x &&
             windowState.y >= bounds.y &&
@@ -40,17 +40,17 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
 
     const resetToDefaults = () => {
         const bounds = screen.getPrimaryDisplay().bounds
-        return Object.assign({}, defaultSize, {
-            x: (bounds.width - defaultSize.width) / 2,
-            y: (bounds.height - defaultSize.height) / 2,
-        })
+        return Object.assign( {}, defaultSize, {
+            x: ( bounds.width - defaultSize.width ) / 2,
+            y: ( bounds.height - defaultSize.height ) / 2,
+        } )
     }
 
     const ensureVisibleOnSomeDisplay = windowState => {
-        const visible = screen.getAllDisplays().some(display => {
-            return windowWithinBounds(windowState, display.bounds)
-        })
-        if (!visible) {
+        const visible = screen.getAllDisplays().some( display => {
+            return windowWithinBounds( windowState, display.bounds )
+        } )
+        if ( !visible ) {
             // Window is partially or fully not visible now.
             // Reset it to safe defaults.
             return resetToDefaults()
@@ -59,13 +59,13 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
     }
 
     const saveState = () => {
-        if (!win.isMinimized() && !win.isMaximized()) {
-            Object.assign(state, getCurrentPosition())
+        if ( !win.isMinimized() && !win.isMaximized() ) {
+            Object.assign( state, getCurrentPosition() )
         }
-        store.set(key, state)
+        store.set( key, state )
     }
 
-    state = ensureVisibleOnSomeDisplay(restore())
+    state = ensureVisibleOnSomeDisplay( restore() )
 
     const browserOptions: BrowserWindowConstructorOptions = {
         ...options,
@@ -76,9 +76,10 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
             ...options.webPreferences,
         },
     }
-    win = new BrowserWindow(browserOptions)
+    win = new BrowserWindow( browserOptions )
+    win.setMenuBarVisibility( false )
 
-    win.on('close', saveState)
+    win.on( 'close', saveState )
 
     return win
 }

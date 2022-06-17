@@ -9,38 +9,38 @@ import 'dotenv/config'
 
 const isProd: boolean = process.env.NODE_ENV === 'production'
 
-if (isProd) {
-    serve({ directory: 'app' })
+if ( isProd ) {
+    serve( { directory: 'app' } )
 } else {
-    app.setPath('userData', `${ app.getPath('userData') } (development)`)
+    app.setPath( 'userData', `${ app.getPath( 'userData' ) } (development)` )
 }
 
-// mongoose
-//     .connect(`mongodb+srv://electron-app:electron-app@arp-cluster.89m0r.mongodb.net/arp?retryWrites=true&w=majority`, { useNewUrlParser: true })
-//     .then(() => {
-        (async () => {
+mongoose
+    .connect( `mongodb+srv://electron-app:electron-app@arp-cluster.89m0r.mongodb.net/arp?retryWrites=true&w=majority`, { useNewUrlParser: true } )
+    .then( () => {
+        ( async () => {
             await app.whenReady()
 
-            const mainWindow = createWindow('main', {
+            const mainWindow = createWindow( 'main', {
                 width: 1000,
                 height: 600,
-            })
+            } )
 
-            if (isProd) {
-                await mainWindow.loadURL('app://./')
+            if ( isProd ) {
+                await mainWindow.loadURL( 'app://./' )
             } else {
                 const port = process.argv[ 2 ]
-                await mainWindow.loadURL(`http://localhost:${ port }/`)
+                await mainWindow.loadURL( `http://localhost:${ port }/` )
             }
-        })()
-    // })
-    // .catch(err => {
-    //     dialog.showErrorBox('Error', err.message)
-    // })
+        } )()
+    } )
+    .catch( err => {
+        dialog.showErrorBox( 'Error', err.message )
+    } )
 
-app.on('window-all-closed', () => {
+app.on( 'window-all-closed', () => {
     app.quit()
-})
+} )
 
 const ALL_EVENTS = [
     ...AUTH_EVENTS,
@@ -48,8 +48,8 @@ const ALL_EVENTS = [
     ...EMPLOYER_EVENTS,
 ]
 
-ALL_EVENTS.forEach(({ name, callback }) => {
-    ipcMain.handle(name, async (event, ...args) => {
-        return await callback(...args)
-    })
-})
+ALL_EVENTS.forEach( ( { name, callback } ) => {
+    ipcMain.handle( name, async ( event, ...args ) => {
+        return await callback( ...args )
+    } )
+} )

@@ -8,7 +8,7 @@ export default () => {
 
     return <>
         <div
-            style={{ position:'absolute', top:10, left:10 }}
+            style={{ position: 'absolute', top: 10, left: 10 }}
         >
             <IconButton size="small" color="default" onClick={() => router.back()}>
                 <ArrowBackIcon />
