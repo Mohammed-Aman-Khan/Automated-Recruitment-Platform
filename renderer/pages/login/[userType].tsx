@@ -1,135 +1,148 @@
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { useRef, useEffect } from "react";
-import { AUTH_EVENTS } from "../../util/events/auth";
-import { useDispatch } from "react-redux";
-import { setAuth } from "../../redux/AuthSlice";
-import isEqual from "lodash/isEqual";
-import capitalize from "lodash/capitalize";
-import { useRouter } from "next/router";
-import IconButton from "@mui/material/IconButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Head from "next/head";
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import { useEffect } from 'react'
+import { AUTH_EVENTS } from '../../util/events/auth'
+import { useDispatch } from 'react-redux'
+import { setAuth } from '../../redux/AuthSlice'
+import isEqual from 'lodash/isEqual'
+import capitalize from 'lodash/capitalize'
+import { useRouter } from 'next/router'
+import IconButton from '@mui/material/IconButton'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import Head from 'next/head'
+import { useImmer } from 'use-immer'
+import { showError } from '../../util/alerts'
+import Stack from '@mui/material/Stack'
 
 export default () => {
-  const router = useRouter();
 
-  const { query, replace } = useRouter();
-  const dispatch = useDispatch();
-  const userType = query.userType ? String(query.userType).toUpperCase() : "";
-  const emailRef = useRef();
-  const passwordRef = useRef();
+    const router = useRouter()
+    const { query } = router
+    const dispatch = useDispatch()
+    const userType = query.userType ? String( query.userType ).toUpperCase() : ''
+    const [ email, setEmail ] = useImmer( '' )
+    const [ password, setPassword ] = useImmer( '' )
 
-  const login = async (e) => {
-    e.preventDefault();
-    // try {
-    //     const { status, error } = await AUTH_EVENTS.LOGIN({
-    //         email: emailRef.current.value,
-    //         passwsord: passwordRef.current.value,
-    //         userType,
-    //     })
-    //     if (status) {
-    //         dispatch(setAuth({
-    //             email: emailRef.current.value,
-    //             passwsord: passwordRef.current.value,
-    //             userType,
-    //         }))
-    //         replace(userType === 'JOBSEEKER' ? '/jobseeker' : '/employer')
-    //     }
-    //     else alert(error)
-    // }
-    // catch (err) {
-    //     console.log(err)
-    // }
-    router.replace("/" + String(query.userType));
-  };
+    const login = async ( e ) => {
+        e.preventDefault()
 
-  useEffect(() => {
-    if (
-      Boolean(userType) &&
-      !isEqual(userType, "JOBSEEKER") &&
-      !isEqual(userType, "EMPLOYER")
-    ) {
-      replace("/");
+        if ( !email ) {
+            showError( `${ userType === 'JOBSEEKER' ? '' : 'Company ' }Email required` )
+            return
+        }
+        if ( !password ) {
+            showError( 'Password required' )
+            return
+        }
+
+        try {
+            const response = await AUTH_EVENTS.LOGIN( {
+                email,
+                password,
+                userType,
+            } )
+
+            if ( !response.status ) {
+                showError( response.error )
+            }
+            else {
+                dispatch( setAuth( { email, userType } ) )
+                router.replace( '/' + userType.toLowerCase() )
+            }
+        }
+        catch ( error ) {
+            showError( error.message )
+        }
     }
-  }, [userType]);
 
-  return (
-    <>
-      <Head>
-        <title>{capitalize(userType)} Login</title>
-      </Head>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        style={{ height: "100%" }}
-      >
-        <Paper
-          variant="outlined"
-          style={{
-            minWidth: 350,
-            borderRadius: 20,
-            padding: 30,
-          }}
+    useEffect( () => {
+        if (
+            Boolean( userType ) &&
+            !isEqual( userType, 'JOBSEEKER' ) &&
+            !isEqual( userType, 'EMPLOYER' )
+        ) {
+            router.replace( '/' )
+        }
+    }, [ userType ] )
+
+    return <>
+        <Head>
+            <title>{capitalize( userType )} Login</title>
+        </Head>
+        <Grid
+            container
+            alignItems='center'
+            justifyContent='center'
+            style={{ height: '100%' }}
         >
-          <div style={{ width: "100%" }}>
-            <Typography variant="h3">Login</Typography>
-            <br />
-            <br />
-            <br />
-            <form onSubmit={login}>
-              <TextField
-                variant="standard"
-                fullWidth
-                label="Email"
-                type="email"
-                ref={emailRef}
-              />
-              <br />
-              <br />
-              <TextField
-                variant="standard"
-                fullWidth
-                label="Password"
-                type="password"
-                ref={passwordRef}
-              />
-              <br />
-              <br />
-              <Button
-                onClick={() =>
-                  router.push("/register/" + String(query.userType))
-                }
-                variant="text"
-                style={{ float: "right" }}
-              >
-                Create Account
-              </Button>
-              <br />
-              <br />
-              <br />
-              <Button
-                fullWidth
-                color="primary"
-                size="large"
-                variant="contained"
-                type="submit"
-              >
-                Login
-              </Button>
-            </form>
-          </div>
-        </Paper>
-      </Grid>
-      <div style={{ position: "absolute", top: 10, left: 10 }}>
-        <IconButton size="small" color="default" onClick={() => router.back()}>
-          <ArrowBackIcon />
-        </IconButton>
-      </div>
+            <Paper
+                variant='outlined'
+                style={{
+                    minWidth: 350,
+                    borderRadius: 20,
+                    padding: 30,
+                }}
+            >
+                <div style={{ width: '100%' }}>
+                    <Stack
+                        direction='column'
+                        gap={5}
+                    >
+                        <Typography variant='h4'>Login</Typography>
+                        <form onSubmit={login}>
+                            <Stack
+                                direction='column'
+                                gap={3}
+                            >
+                                <TextField
+                                    variant='standard'
+                                    fullWidth
+                                    label={`${ userType === 'JOBSEEKER' ? '' : 'Company ' }Email`}
+                                    type='email'
+                                    value={email}
+                                    onChange={e => setEmail( e.target.value )}
+                                />
+                                <TextField
+                                    variant='standard'
+                                    fullWidth
+                                    label='Password'
+                                    type='password'
+                                    value={password}
+                                    onChange={e => setPassword( e.target.value )}
+                                />
+                                <div>
+                                    <Button
+                                        onClick={() =>
+                                            router.push( '/register/' + userType.toLowerCase() )
+                                        }
+                                        variant='text'
+                                        style={{ float: 'right' }}
+                                    >
+                                        Create Account
+                                    </Button>
+                                </div>
+                                <Button
+                                    fullWidth
+                                    color='primary'
+                                    size='large'
+                                    variant='contained'
+                                    type='submit'
+                                >
+                                    Login
+                                </Button>
+                            </Stack>
+                        </form>
+                    </Stack>
+                </div>
+            </Paper>
+        </Grid>
+        <div style={{ position: 'absolute', top: 10, left: 10 }}>
+            <IconButton size='small' color='default' onClick={() => router.back()}>
+                <ArrowBackIcon />
+            </IconButton>
+        </div>
     </>
-  );
-};
+}

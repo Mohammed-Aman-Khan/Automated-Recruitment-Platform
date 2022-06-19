@@ -1,3 +1,4 @@
+import { useImmer } from 'use-immer'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
@@ -11,8 +12,10 @@ import FormControl from '@mui/material/FormControl'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { useImmer } from 'use-immer'
+import Divider from '@mui/material/Divider'
 import { showError } from '../../../util/alerts'
+import { Fragment } from 'react'
+import capitalize from 'lodash/capitalize'
 
 const initialQualification = {
     level: '',
@@ -53,13 +56,14 @@ const Qualification = ( {
         }
 
         setQualifications( [ ...qualifications, newQualification ] )
+        setOpenDialog( false )
         setNewQualification( initialQualification )
     }
 
     return <>
         <Paper
             variant='outlined'
-            sx={{ borderRadius: '20px', padding: '20px' }}
+            sx={{ borderRadius: '20px', padding: '20px', maxHeight: '500px' }}
         >
             <div
                 style={{
@@ -81,6 +85,41 @@ const Qualification = ( {
                 </Button>
             </div>
             <br />
+            {
+                qualifications
+                    .map( ( {
+                        level,
+                        yearOfCompletion,
+                        institution,
+                    }, index ) =>
+                        <Fragment key={`${ institution } - ${ level } - ${ yearOfCompletion }`}>
+                            <Typography variant='body1'>
+                                <strong>{level}</strong>
+                            </Typography>
+                            <Typography variant='button'>
+                                <em>
+                                    {String( institution ).split( ' ' ).map( capitalize ).join( ' ' )}
+                                </em>
+                            </Typography>
+                            <br />
+                            <Typography variant='subtitle2'>
+                                Year of Completion - {yearOfCompletion}
+                            </Typography>
+                            {
+                                index + 1 === qualifications.length
+                                    ?
+                                    <></>
+                                    :
+                                    <>
+                                        <br />
+                                        <br />
+                                        <Divider />
+                                        <br />
+                                    </>
+                            }
+                        </Fragment>
+                    )
+            }
         </Paper>
         <Dialog
             open={openDialog}

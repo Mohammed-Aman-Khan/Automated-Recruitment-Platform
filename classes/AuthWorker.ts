@@ -17,15 +17,16 @@ class AuthWorker implements AuthWorkerInterface {
      * @param {LoginDetails} loginDetails
      * @returns {Promise<BasicResponse>} Promise<BasicResponse>
      */
-    async login (loginDetails: LoginDetails): Promise<BasicResponse> {
+    async login ( loginDetails: LoginDetails ): Promise<BasicResponse> {
         try {
             const { email, password, userType } = loginDetails
 
-            const result: CredentialInterface | null = await Credential.findOne({ email })
+            const result: CredentialInterface | null = await Credential.findOne( { email, userType } )
 
-            if (result) { // If User found
-                let decryptedPassword = decrypt(result.password, result.key)
-                if (!isEqual(password, decryptedPassword)) // If password does not match
+            if ( result ) { // If User found
+                let decryptedPassword = decrypt( result.password, result.key )
+                console.log( decryptedPassword )
+                if ( !isEqual( password, decryptedPassword ) ) // If password does not match
                     return {
                         status: false,
                         error: "Invalid Credentials",
@@ -42,7 +43,7 @@ class AuthWorker implements AuthWorkerInterface {
                 }
             }
         }
-        catch (err) {
+        catch ( err ) {
             return {
                 status: false,
                 error: err.message,
@@ -55,13 +56,13 @@ class AuthWorker implements AuthWorkerInterface {
      * @param {RegisterDetails} registerDetails
      * @returns {Promise<BasicResponse>} Promise<BasicResponse>
      */
-    async register (registerDetails: RegisterDetails): Promise<BasicResponse> {
+    async register ( registerDetails: RegisterDetails ): Promise<BasicResponse> {
         try {
             const { email, password, userType, name, dateOfBirth, branch, } = registerDetails
 
-            const result: CredentialInterface | null = await Credential.findOne({ email })
+            const result: CredentialInterface | null = await Credential.findOne( { email } )
 
-            if (result) { // If User found
+            if ( result ) { // If User found
                 return {
                     status: false,
                     error: "User exists",
@@ -71,29 +72,31 @@ class AuthWorker implements AuthWorkerInterface {
                 let newUser: Document<JobSeekerInterface | EmployerInterface>
                 let newCredentials: Document<CredentialInterface>
 
-                let { key, encryptedString } = encrypt(password)
+                let { key, encryptedString } = encrypt( password )
 
-                newCredentials = new Credential({
+                newCredentials = new Credential( {
                     email,
                     key,
                     password: encryptedString,
                     userType,
-                })
+                } )
 
-                switch (userType) {
+                switch ( userType ) {
                     case 'JOBSEEKER':
-                        newUser = new JobSeeker({
+                        newUser = new JobSeeker( {
                             email,
                             name,
                             dateOfBirth,
                             interests: [ 'FULL TIME', 'PART TIME', 'INTERNSHIP' ],
-                        })
+                        } )
+                        break
                     case 'EMPLOYER':
-                        newUser = new Employer({
+                        newUser = new Employer( {
                             email,
                             name,
                             branch,
-                        })
+                        } )
+                        break
                     default:
                         return {
                             status: false,
@@ -101,15 +104,15 @@ class AuthWorker implements AuthWorkerInterface {
                         }
                 }
 
-                if (newUser && newCredentials) {
-                    await Promise.all([ newUser.save(), newCredentials.save() ])
+                if ( newUser && newCredentials ) {
+                    await Promise.all( [ newUser.save(), newCredentials.save() ] )
                     return {
                         status: true,
                     }
                 }
             }
         }
-        catch (err) {
+        catch ( err ) {
             return {
                 status: false,
                 error: err.message

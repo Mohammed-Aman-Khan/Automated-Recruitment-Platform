@@ -16,14 +16,8 @@ const schema = new mongoose.Schema<JobSeekerInterface>( {
     ],
     experience: [
         {
-            startdate: {
-                month: Number,
-                year: Number,
-            },
-            endDate: {
-                month: Number,
-                year: Number,
-            },
+            startdate: String,
+            endDate: String,
             organization: String,
             role: String,
             description: String,
@@ -32,11 +26,7 @@ const schema = new mongoose.Schema<JobSeekerInterface>( {
     certifications: [
         {
             course: String,
-            duration: {
-                month: Number,
-                year: Number,
-            },
-            issuingAuthority: String,
+            provider: String,
             mode: String,
         }
     ],

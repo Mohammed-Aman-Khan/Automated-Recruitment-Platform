@@ -6,22 +6,21 @@ const initialState = {
     userType: '',
 }
 
-const AuthSlice = createSlice({
+const AuthSlice = createSlice( {
     name: 'auth',
     initialState,
     reducers: {
-        setAuth: (state, action) => {
+        setAuth: ( state, action ) => {
             state.loggedIn = true
             state.email = action.payload.email
             state.userType = action.payload.userType
             return state
         },
-        resetAuth: (state, action) => {
-            state = initialState
-            return state
+        resetAuth: ( state, action ) => {
+            return initialState
         },
     }
-})
+} )
 
 export const {
     setAuth,

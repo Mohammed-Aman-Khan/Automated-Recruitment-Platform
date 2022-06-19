@@ -19,6 +19,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { resetAuth } from '../redux/AuthSlice'
 
 const drawerWidth = 350
 
@@ -75,6 +77,7 @@ export default function PersistentDrawerLeft ( { children } ) {
 
     const router = useRouter()
     const theme = useTheme()
+    const dispatch = useDispatch()
     const [ open, setOpen ] = useState( false )
 
     const handleDrawerOpen = () => {
@@ -83,6 +86,11 @@ export default function PersistentDrawerLeft ( { children } ) {
 
     const handleDrawerClose = () => {
         setOpen( false )
+    }
+
+    const logout = () => {
+        dispatch( resetAuth() )
+        router.replace( '/' )
     }
 
     return (
@@ -139,7 +147,7 @@ export default function PersistentDrawerLeft ( { children } ) {
                     </Fragment>
                     )}
                     <br />
-                    <Button onClick={() => router.replace( '/' )} size="large" fullWidth>
+                    <Button onClick={logout} size="large" fullWidth>
                         Logout
                     </Button>
                 </List>

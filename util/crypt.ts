@@ -1,14 +1,14 @@
-import { AES } from 'crypto-js'
+import { AES, enc } from 'crypto-js'
 import { generateKey } from './helper'
 
-export const encrypt = (string: string): { encryptedString: string, key: string } => {
+export const encrypt = ( string: string ): { encryptedString: string, key: string } => {
     const key = generateKey()
     return {
         key,
-        encryptedString: AES.encrypt(string, key).toString(),
+        encryptedString: AES.encrypt( string, key ).toString(),
     }
 }
 
-export const decrypt = (encryptedString: string, key: string): string => {
-    return AES.decrypt(encryptedString, key).toString()
+export const decrypt = ( encryptedString: string, key: string ): string => {
+    return AES.decrypt( encryptedString, key ).toString( enc.Utf8 )
 }
