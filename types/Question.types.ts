@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 
-export type EmployerId = mongoose.Types.ObjectId
+export type EmailId = string
 
 export type Type = 'VERBAL' | 'NONVERBAL'
 

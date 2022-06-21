@@ -18,9 +18,11 @@ import ListItemText from '@mui/material/ListItemText'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import { resetAuth } from '../redux/AuthSlice'
+import Link from 'next/link'
 
 const drawerWidth = 350
 
@@ -132,20 +134,31 @@ export default function PersistentDrawerLeft ( { children } ) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {[
-                        'Company Profile',
-                        'Jobs',
-                        'Interview Setup',
-                    ].map( ( text, index ) => <Fragment key={text}>
-                        <ListItem button>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                        <Divider />
-                    </Fragment>
-                    )}
+                    {
+                        [
+                            {
+                                title: 'Dashboard',
+                                link: '/employer',
+                            },
+                            {
+                                title: 'Question Set',
+                                link: '/employer/question-set',
+                            },
+                        ]
+                            .map( ( { title, link }, index ) =>
+                                <Fragment key={title}>
+                                    <Link href={link} passHref>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                            </ListItemIcon>
+                                            <ListItemText primary={title} />
+                                        </ListItem>
+                                    </Link>
+                                    <Divider />
+                                </Fragment>
+                            )
+                    }
                     <br />
                     <Button onClick={logout} size="large" fullWidth>
                         Logout
@@ -153,7 +166,18 @@ export default function PersistentDrawerLeft ( { children } ) {
                 </List>
             </Drawer>
             <Main open={open}>
-                {children}
+                <Grid
+                    container
+                    spacing={3}
+                >
+                    <Grid
+                        item
+                        xs={12}
+                    >
+                        <Toolbar />
+                    </Grid>
+                    {children}
+                </Grid>
             </Main>
         </Box>
     )

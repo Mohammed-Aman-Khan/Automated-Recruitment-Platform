@@ -2,8 +2,6 @@ export type Name = string
 
 export type EmailId = string
 
-export type DateOfBirth = string
-
 export type ResumeLink = string
 
 export type Qualification = {
@@ -26,18 +24,6 @@ export type Experience = {
     description: string,
 }
 
-export type Certification = {
-    course: string,
-    duration: {
-        month: number,
-        year: number,
-    },
-    issuingAuthority: string,
-    mode: 'ONLINE' | 'OFFLINE'
-}
+export type Certification = string
 
 export type Skill = string
-
-export type CurrentlyEmployed = boolean
-
-export type Interests = 'PART TIME' | 'FULL TIME' | 'INTERNSHIP'

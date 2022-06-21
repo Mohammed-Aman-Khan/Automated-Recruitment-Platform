@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
 import { useDispatch } from 'react-redux'
 import { resetAuth } from '../redux/AuthSlice'
+import Link from 'next/link'
 
 const drawerWidth = 350
 
@@ -69,7 +70,6 @@ const DrawerHeader = styled( 'div' )( ( { theme } ) => ( {
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing( 0, 1 ),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 } ) )
@@ -133,21 +133,35 @@ export default function PersistentDrawerLeft ( { children } ) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {[
-                        'Profile',
-                        'Job Search',
-                        'Applications',
-                        'Preparation',
-                    ].map( ( text, index ) => <Fragment key={text}>
-                        <ListItem button>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                        <Divider />
-                    </Fragment>
-                    )}
+                    {
+                        [
+                            {
+                                title: 'Profile',
+                                link: '/jobseeker',
+                            },
+                            {
+                                title: 'Job Search',
+                                link: '/jobseeker/job-search',
+                            },
+                            {
+                                title: 'Applications',
+                                link: '/jobseeker/applications',
+                            },
+                        ]
+                            .map( ( { title, link }, index ) =>
+                                <Fragment key={title}>
+                                    <Link href={link} passHref>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                            </ListItemIcon>
+                                            <ListItemText primary={title} />
+                                        </ListItem>
+                                    </Link>
+                                    <Divider />
+                                </Fragment>
+                            )
+                    }
                     <br />
                     <Button onClick={logout} size="large" fullWidth>
                         Logout

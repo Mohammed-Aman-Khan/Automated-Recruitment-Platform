@@ -5,7 +5,6 @@ import { JobSeekerInterface } from '../interfaces/JobSeeker.interface'
 const schema = new mongoose.Schema<JobSeekerInterface>( {
     name: String,
     email: String,
-    dateOfBirth: String,
     resumeLink: String,
     qualifications: [
         {
@@ -23,16 +22,8 @@ const schema = new mongoose.Schema<JobSeekerInterface>( {
             description: String,
         }
     ],
-    certifications: [
-        {
-            course: String,
-            provider: String,
-            mode: String,
-        }
-    ],
+    certifications: [ String ],
     skills: [ String ],
-    currentlyEmployed: Boolean,
-    interests: [ String ],
 } )
 
 // Create a Model.

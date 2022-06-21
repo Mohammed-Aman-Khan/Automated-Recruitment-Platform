@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Head from 'next/head'
 import Stack from '@mui/material/Stack'
-import { DesktopDatePicker } from '@mui/x-date-pickers'
 import { useImmer } from 'use-immer'
 import { showError, showSuccess } from '../../util/alerts'
 
@@ -23,7 +22,6 @@ export default () => {
     const [ email, setEmail ] = useImmer( '' )
     const [ password, setPassword ] = useImmer( '' )
     const [ branch, setBranch ] = useImmer( '' )
-    const [ dateOfBirth, setDateOfBirth ] = useImmer( null )
 
     const register = async e => {
         e.preventDefault()
@@ -34,10 +32,6 @@ export default () => {
         }
         if ( !email ) {
             showError( `${ userType === 'JOBSEEKER' ? '' : 'Company ' }Email required` )
-            return
-        }
-        if ( !( userType === 'JOBSEEKER' ? dateOfBirth : branch ) ) {
-            showError( `${ userType === 'JOBSEEKER' ? 'Date of Birth' : 'Company Branch' } required` )
             return
         }
         if ( !password ) {
@@ -51,7 +45,6 @@ export default () => {
                 password,
                 userType,
                 name,
-                dateOfBirth: `${ dateOfBirth?.getDate() }-${ dateOfBirth?.getMonth() }-${ dateOfBirth?.getFullYear() }`,
                 branch,
             } )
 
@@ -118,22 +111,14 @@ export default () => {
                                     onChange={e => setEmail( e.target.value )}
                                 />
                                 {
-                                    userType === 'JOBSEEKER' ?
-                                        <DesktopDatePicker
-                                            label='Date of Birth'
-                                            inputFormat='dd-MM-yyyy'
-                                            value={dateOfBirth}
-                                            onChange={setDateOfBirth}
-                                            renderInput={params => <TextField fullWidth variant='standard' {...params} />}
-                                        />
-                                        :
-                                        <TextField
-                                            variant='standard'
-                                            fullWidth
-                                            label='Company Branch'
-                                            value={branch}
-                                            onChange={e => setBranch( e.target.value )}
-                                        />
+                                    userType === 'JOBSEEKER' &&
+                                    <TextField
+                                        variant='standard'
+                                        fullWidth
+                                        label='Company Branch'
+                                        value={branch}
+                                        onChange={e => setBranch( e.target.value )}
+                                    />
                                 }
                                 <TextField
                                     variant='standard'

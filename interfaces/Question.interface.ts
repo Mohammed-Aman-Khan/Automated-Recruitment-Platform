@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose'
-import { EmployerId, Type, Topic, Question, Answer, Points, TimeLimit } from '../types/Question.types'
+import { EmailId, Type, Topic, Question, Answer, Points, TimeLimit } from '../types/Question.types'
 
 export interface QuestionInterface extends mongoose.Document {
-    employerId: EmployerId,
+    employerEmail: EmailId,
     type: Type,
     topic: Topic,
     question: Question,

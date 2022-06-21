@@ -74,7 +74,7 @@ const UtilWrapper = ( { children } ) => {
         <Toaster
             toastOptions={{
                 style: {
-                    fontFamily: 'Comfortaa',
+                    fontFamily: 'Roboto',
                     borderRadius: '10px',
                     background: '#333',
                     color: '#fff',
@@ -91,7 +91,7 @@ const ThemeWrapper = ( { children } ) => {
                 mode: 'dark',
             },
             typography: {
-                fontFamily: [ 'Comfortaa', 'cursive' ].join( ',' ),
+                fontFamily: [ 'Roboto', 'cursive' ].join( ',' ),
             }
         } )}
     >

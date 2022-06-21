@@ -7,55 +7,55 @@ import capitalize from 'lodash/capitalize'
 import cloneDeep from 'lodash/cloneDeep'
 import Chip from '@mui/material/Chip'
 
-const initialSkill = ''
+const initialCertification = ''
 
-const Qualification = ( {
-    skills,
-    setSkills,
-} ) => {
+const Qualification = ({
+    certifications,
+    setCertifications,
+}) => {
 
-    const [ newSkill, setNewSkill ] = useImmer( initialSkill )
+    const [ newSkill, setNewSkill ] = useImmer(initialCertification)
 
     const addSkill = e => {
         e.preventDefault()
 
-        if ( !newSkill ) {
+        if (!newSkill) {
             return
         }
 
-        const newSkills = newSkill.split( ',' ).map( item => item.replace( /\s+/g, " " ).trim().split( ' ' ).map( capitalize ).join( ' ' ) )
+        const newCertifications = newSkill.split(',').map(item => item.replace(/\s+/g, " ").trim().split(' ').map(capitalize).join(' '))
 
-        setSkills( [ ...skills, ...newSkills ] )
-        setNewSkill( initialSkill )
+        setCertifications([ ...certifications, ...newCertifications ])
+        setNewSkill(initialCertification)
     }
 
-    const deleteSkill = index => {
-        const newSkills = cloneDeep( skills )
-        newSkills.splice( index, 1 )
-        setSkills( newSkills )
+    const deleteCertification = index => {
+        const newCertifications = cloneDeep(certifications)
+        newCertifications.splice(index, 1)
+        setCertifications(newCertifications)
     }
 
     return <>
         <Paper
             variant='outlined'
-            sx={{ borderRadius: '20px', padding: '20px' }}
+            sx={ { borderRadius: '20px', padding: '20px' } }
         >
             <Typography
                 variant='h6'
             >
-                Skills
+                Certifications
             </Typography>
             <br />
             <form
-                onSubmit={addSkill}
+                onSubmit={ addSkill }
             >
                 <TextField
                     fullWidth
                     label='Add New'
                     variant='standard'
-                    value={newSkill}
-                    onChange={e => setNewSkill( e.target.value )}
-                    helperText='Add multiple skills by seperating them with a comma (,)'
+                    value={ newSkill }
+                    onChange={ e => setNewSkill(e.target.value) }
+                    helperText='Add multiple Certifications by seperating them with a comma (,)'
                 />
                 <br /><br />
                 <Button
@@ -67,14 +67,14 @@ const Qualification = ( {
             </form>
             <br /><br />
             {
-                skills?.map( ( skill, index ) =>
+                certifications?.map((skill, index) =>
                     <Chip
-                        key={skill}
-                        sx={{
+                        key={ skill }
+                        sx={ {
                             margin: '5px',
-                        }}
-                        label={skill}
-                        onDelete={() => deleteSkill( index )}
+                        } }
+                        label={ skill }
+                        onDelete={ () => deleteCertification(index) }
                     />
                 )
             }

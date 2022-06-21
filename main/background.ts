@@ -55,7 +55,7 @@ checkInternetConnected()
 
         ALL_EVENTS.forEach( ( { name, callback } ) => {
             ipcMain.handle( name, async ( event, ...args ) => {
-                return await callback( ...args )
+                return JSON.stringify( await callback( ...args ) )
             } )
         } )
     } )

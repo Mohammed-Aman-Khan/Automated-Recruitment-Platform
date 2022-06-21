@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AuthSlice from './AuthSlice'
+import MyDetailsSlice from './MyDetailsSlice'
+import QuestionSetSlice from './QuestionSetSlice'
 
 const Store = configureStore( {
     reducer: {
         auth: AuthSlice.reducer,
+        myDetails: MyDetailsSlice.reducer,
+        questionSet: QuestionSetSlice.reducer,
     },
 } )
 

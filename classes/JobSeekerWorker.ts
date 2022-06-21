@@ -2,37 +2,65 @@ import { GetJobsResponse, GetMyDetailsResponse, JobFilter, JobSeekerWorkerInterf
 import { BasicResponse } from '../interfaces/Shared.interface'
 import JobSeeker from '../schemas/JobSeeker.schema'
 import { EmailId } from '../types/Credential.types'
-import { CurrentlyEmployed, Experience, Interests, Qualification, Skill } from '../types/JobSeeker.types'
-import { MongoObjectId } from '../types/Shared.types'
 import { JobSeekerInterface } from "../interfaces/JobSeeker.interface"
-
+import Job from '../schemas/Job.schema'
 
 class JobSeekerWorker implements JobSeekerWorkerInterface {
 
-    async getJobs ( authId: MongoObjectId, filter?: JobFilter ): Promise<GetJobsResponse> {
+    async getJobs ( filter?: JobFilter ): Promise<GetJobsResponse> {
         try {
+            const result = await Job.find( filter || {} )
+
             return {
                 status: true,
-                jobs: []
+                jobs: result,
 
             }
-        } catch ( error ) {
+        }
+        catch ( error ) {
             return {
                 status: false,
                 error: error.message,
-                jobs: []
             }
         }
     }
 
-    async getMyDetails ( authId: MongoObjectId, email: EmailId ): Promise<GetMyDetailsResponse> {
+    async getMyDetails ( email: EmailId ): Promise<GetMyDetailsResponse> {
         try {
-            const result = await JobSeeker.findOne( { _id: authId } )
+            const result = await JobSeeker.findOne( { email }, { _id: 0, __v: 0 } )
             return {
                 status: true,
                 data: result,
             }
-        } catch ( error ) {
+        }
+        catch ( error ) {
+            return {
+                status: false,
+                error: error.message,
+            }
+        }
+    }
+
+    async saveMyDetails ( email: EmailId, details: JobSeekerInterface ): Promise<BasicResponse> {
+        try {
+            const updateResult = await JobSeeker.updateOne(
+                { email },
+                {
+                    name: details.name,
+                    email: details.email,
+                    qualifications: details.qualifications,
+                    resumeLink: details.resumeLink,
+                    experience: details.experience,
+                    certifications: details.certifications,
+                    skills: details.skills,
+                }
+            )
+
+            return {
+                status: true,
+            }
+        }
+        catch ( error ) {
             return {
                 status: false,
                 error: error.message,

@@ -8,11 +8,17 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { DesktopDatePicker } from '@mui/x-date-pickers'
+import IconButton from '@mui/material/IconButton'
+import Divider from '@mui/material/Divider'
+import { showError } from '../../../util/alerts'
+import { Fragment } from 'react'
+import capitalize from 'lodash/capitalize'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const initialExperience = {
-    startDate: null,
-    endDate: null,
+    startDate: '',
+    endDate: '',
     organization: '',
     role: '',
     description: '',
@@ -33,6 +39,26 @@ const Experience = ( {
     }
 
     const addExperience = () => {
+        if ( !newExperience.organization ) {
+            showError( 'Organization required' )
+            return
+        }
+        if ( !newExperience.startDate ) {
+            showError( 'Start Date required' )
+            return
+        }
+        if ( !newExperience.endDate ) {
+            showError( 'End Date required' )
+            return
+        }
+        if ( !newExperience.role ) {
+            showError( 'Role required' )
+            return
+        }
+        if ( !newExperience.description ) {
+            showError( 'Description required' )
+            return
+        }
 
         setExperience( [ ...experience, newExperience ] )
         setOpenDialog( false )
@@ -42,7 +68,7 @@ const Experience = ( {
     return <>
         <Paper
             variant='outlined'
-            sx={{ borderRadius: '20px', padding: '20px', maxHeight: '500px' }}
+            sx={{ borderRadius: '20px', padding: '20px' }}
         >
             <div
                 style={{
@@ -64,6 +90,58 @@ const Experience = ( {
                 </Button>
             </div>
             <br />
+            {
+                experience?.map( ( {
+                    startDate,
+                    endDate,
+                    organization,
+                    role,
+                    description,
+                }, index ) =>
+                    <Fragment key={`${ role } - ${ organization }`}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <div>
+                                <Typography variant='body1'>
+                                    <strong>{role}</strong> at <em>{organization}</em>
+                                </Typography>
+                                <Typography variant='button'>
+                                    <strong>{startDate}</strong> to <strong>{endDate}</strong>
+                                </Typography>
+                                <br />
+                                <Typography>
+                                    {description}
+                                </Typography>
+                            </div>
+                            <div>
+                                <IconButton>
+                                    <EditIcon />
+                                </IconButton>
+                                &nbsp;&nbsp;
+                                <IconButton>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </div>
+                        </div>
+                        {
+                            index + 1 === experience.length
+                                ?
+                                <></>
+                                :
+                                <>
+                                    <br />
+                                    <Divider />
+                                    <br />
+                                </>
+                        }
+                    </Fragment>
+                )
+            }
         </Paper>
         <Dialog
             open={openDialog}
@@ -86,21 +164,19 @@ const Experience = ( {
                         value={newExperience.organization}
                         onChange={e => set( 'organization', e.target.value )}
                     />
-                    <DesktopDatePicker
-                        views={[ 'month', 'year' ]}
-                        label='Start Date'
-                        inputFormat='MM-yyyy'
+                    <TextField
+                        fullWidth
+                        variant='standard'
+                        label='Start Date (MM-YYYY)'
                         value={newExperience.startDate}
                         onChange={val => set( 'startDate', val )}
-                        renderInput={params => <TextField fullWidth variant='standard' {...params} />}
                     />
-                    <DesktopDatePicker
-                        views={[ 'month', 'year' ]}
-                        label='End Date'
-                        inputFormat='MM-yyyy'
+                    <TextField
+                        fullWidth
+                        variant='standard'
+                        label='End Date (MM-YYYY)'
                         value={newExperience.endDate}
                         onChange={val => set( 'endDate', val )}
-                        renderInput={params => <TextField fullWidth variant='standard' {...params} />}
                     />
                     <TextField
                         fullWidth

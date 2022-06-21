@@ -1,32 +1,38 @@
-import { useTheme } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import { showError } from '../../util/alerts'
 import TextField from '@mui/material/TextField'
 import { useImmer } from 'use-immer'
-import Qualification from '../../components/JobSeeker/Profile/Qualification'
+import Qualifications from '../../components/JobSeeker/Profile/Qualifications'
 import Experience from '../../components/JobSeeker/Profile/Experience'
 import Skills from '../../components/JobSeeker/Profile/Skills'
+import Certifications from '../../components/JobSeeker/Profile/Certifications'
 import Head from 'next/head'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import { DesktopDatePicker } from '@mui/x-date-pickers'
 import { uploadResume, getLink } from '../../util/supabase'
 import { parseResume } from '../../util/resume-parser'
 import toast from 'react-hot-toast'
+import capitalize from 'lodash/capitalize'
+import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import useRequests from '../../hooks/JobSeeker/useRequests'
 
 const Input = styled( 'input' )( {
     display: 'none',
 } )
 
 const GridField = ( {
-    label,
-    value,
-    onChange
+    label = '',
+    value = '',
+    onChange = val => { },
+    disabled = false,
 } ) => <Grid
     item
-    xs={12} sm={12} md={6} lg={4} xl={4}
+    xs={12} sm={12} md={6} lg={6} xl={6}
 >
         <TextField
             fullWidth
@@ -34,25 +40,28 @@ const GridField = ( {
             label={label}
             value={value}
             onChange={e => onChange( e.target.value )}
+            disabled={disabled}
         />
     </Grid>
 
+const initialState = {
+    name: '',
+    email: '',
+    resumeLink: '',
+    qualifications: [],
+    experience: [],
+    certifications: [],
+    skills: [],
+}
+
 export default () => {
 
-    const theme = useTheme()
-    const [ data, setData ] = useImmer( {
-        name: '',
-        email: '',
-        dateOfBirth: null,
-        resumeLink: '',
-        qualifications: [],
-        experience: [],
-        certifications: [],
-        skills: [],
-        currentlyEmployed: false,
-        interests: [],
-    } )
-    const [ parsedData, setParsedData ] = useImmer( {} )
+    const myDetails = useSelector( state => state.myDetails )
+    const {
+        getMyDetails,
+        saveMyDetails,
+    } = useRequests()
+    const [ data, setData ] = useImmer( initialState )
 
     const set = ( key, value ) => {
         setData( prev => {
@@ -70,8 +79,47 @@ export default () => {
                 if ( file.type === 'application/pdf' ) {
                     const { fileName } = await uploadResume( file )
                     const publicLink = getLink( fileName )
+                    set( 'resumeLink', publicLink )
                     const parsedResume = await parseResume( publicLink )
-                    console.log( parsedResume )
+                    set( 'name', parsedResume.name )
+                    // set( 'email', parsedResume.email )
+                    set(
+                        'qualifications',
+                        parsedResume.education.map( education => {
+                            const modified = {
+                                level: '',
+                                yearOfCompletion: '',
+                                institution: '',
+                            }
+                            modified.institution = education.name
+                            modified.yearOfCompletion = education.dates.toString()
+
+                            return modified
+                        } )
+                    )
+                    set(
+                        'experience',
+                        parsedResume.experience.map( experience => {
+                            const modified = {
+                                startDate: '',
+                                endDate: '',
+                                organization: '',
+                                role: '',
+                                description: '',
+                            }
+                            modified.role = experience.title
+                            modified.organization = experience.organization
+                            modified.startDate = experience.dates.toString()
+
+                            return modified
+                        } )
+                    )
+                    set(
+                        'skills',
+                        parsedResume.skills.map( skill =>
+                            skill.replace( /\s+/g, " " ).trim().split( ' ' ).map( capitalize ).join( ' ' )
+                        )
+                    )
                 }
                 else {
                     showError( 'Invalid File' )
@@ -84,6 +132,14 @@ export default () => {
             showError( error.message )
         }
     }
+
+    const saveChanges = () => {
+        saveMyDetails( data )
+    }
+
+    useEffect( getMyDetails, [] )
+    useEffect( () => setData( myDetails ), [ myDetails ] )
+
 
     return <>
         <Head>
@@ -110,41 +166,29 @@ export default () => {
         </Grid>
         <GridField
             label='Name'
-            value={data.name}
+            value={data?.name}
             onChange={val => set( 'name', val )}
         />
         <GridField
             label='Email'
-            value={data.email}
-            onChange={val => set( 'email', val )}
+            value={data?.email}
+            disabled
         />
         <Grid
             item
-            xs={12} sm={12} md={6} lg={4} xl={4}
+            xs={12}
         >
-            <DesktopDatePicker
-                label='Date of Birth'
-                inputFormat='dd-MM-yyyy'
-                value={data.dateOfBirth}
-                onChange={val => set( 'dateOfBirth', val )}
-                renderInput={params => <TextField fullWidth variant='standard' {...params} />}
-            />
-        </Grid>
-        <Grid
-            item
-            xs={12} sm={12} md={6} lg={6} xl={6}
-        >
-            <Qualification
-                qualifications={data.qualifications}
+            <Qualifications
+                qualifications={data?.qualifications}
                 setQualifications={val => set( 'qualifications', val )}
             />
         </Grid>
         <Grid
             item
-            xs={12} sm={12} md={6} lg={6} xl={6}
+            xs={12}
         >
             <Experience
-                experience={data.experience}
+                experience={data?.experience}
                 setExperience={val => set( 'experience', val )}
             />
         </Grid>
@@ -153,8 +197,17 @@ export default () => {
             xs={12}
         >
             <Skills
-                skills={data.skills}
+                skills={data?.skills}
                 setSkills={val => set( 'skills', val )}
+            />
+        </Grid>
+        <Grid
+            item
+            xs={12}
+        >
+            <Certifications
+                certifications={data?.certifications}
+                setCertifications={val => set( 'certifications', val )}
             />
         </Grid>
         <Grid item xs={12} />
@@ -171,6 +224,8 @@ export default () => {
                     size='large'
                     variant='outlined'
                     color='primary'
+                    disabled={isEqual( cloneDeep( myDetails ), data )}
+                    onClick={() => setData( myDetails )}
                 >
                     Cancel Changes
                 </Button>
@@ -179,6 +234,8 @@ export default () => {
                     size='large'
                     variant='contained'
                     color='primary'
+                    disabled={isEqual( cloneDeep( myDetails ), data )}
+                    onClick={saveChanges}
                 >
                     Save Changes
                 </Button>

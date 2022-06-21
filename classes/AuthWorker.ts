@@ -25,7 +25,6 @@ class AuthWorker implements AuthWorkerInterface {
 
             if ( result ) { // If User found
                 let decryptedPassword = decrypt( result.password, result.key )
-                console.log( decryptedPassword )
                 if ( !isEqual( password, decryptedPassword ) ) // If password does not match
                     return {
                         status: false,
@@ -58,7 +57,7 @@ class AuthWorker implements AuthWorkerInterface {
      */
     async register ( registerDetails: RegisterDetails ): Promise<BasicResponse> {
         try {
-            const { email, password, userType, name, dateOfBirth, branch, } = registerDetails
+            const { email, password, userType, name, branch, } = registerDetails
 
             const result: CredentialInterface | null = await Credential.findOne( { email } )
 
@@ -86,7 +85,6 @@ class AuthWorker implements AuthWorkerInterface {
                         newUser = new JobSeeker( {
                             email,
                             name,
-                            dateOfBirth,
                             interests: [ 'FULL TIME', 'PART TIME', 'INTERNSHIP' ],
                         } )
                         break
