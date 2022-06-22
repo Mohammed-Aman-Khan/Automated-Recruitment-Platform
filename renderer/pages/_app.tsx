@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import { setAuth } from '../redux/AuthSlice'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import '../styles/global.css'
 
 const EmptyLayout = ( { children } ) => <>{children}</>
 

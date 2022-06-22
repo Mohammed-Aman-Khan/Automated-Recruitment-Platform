@@ -6,7 +6,9 @@ export interface QuestionInterface extends mongoose.Document {
     type: Type,
     topic: Topic,
     question: Question,
+    questionText: Question,
     answer: Answer,
+    answerText: Answer,
     points: Points,
     timeLimit: TimeLimit,
 }

@@ -4,6 +4,7 @@ import { EmployerWorkerInterface, GetQuestionSet } from '../interfaces/EmployerW
 import { EmailId } from "../types/Employer.types"
 import { BasicResponse } from "../interfaces/Shared.interface"
 import { QuestionInterface } from "../interfaces/Question.interface"
+import { convert } from 'html-to-text'
 
 class EmployerWorker implements EmployerWorkerInterface {
 
@@ -26,7 +27,12 @@ class EmployerWorker implements EmployerWorkerInterface {
 
     async addQuestion ( email: EmailId, question: QuestionInterface ): Promise<BasicResponse> {
         try {
-            const newQuestion = new Question( question )
+            const newQuestion = new Question( {
+                employerEmail: email,
+                questionText: convert( question.question, { wordWrap: 130 } ),
+                answerText: convert( question.answer, { wordWrap: 130 } ),
+                ...question
+            } )
 
             await newQuestion.save()
 

@@ -7,9 +7,14 @@ const schema = new mongoose.Schema<QuestionInterface>( {
     type: String,
     topic: String,
     question: String,
+    questionText: String,
     answer: String,
+    answerText: String,
     points: Number,
-    timeLimit: Number,
+    timeLimit: {
+        minutes: Number,
+        seconds: Number,
+    },
 } )
 
 // Create a Model.
