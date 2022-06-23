@@ -1,10 +1,11 @@
 import Employer from "../schemas/Employer.schema"
 import Question from "../schemas/Question.schema"
-import { EmployerWorkerInterface, GetQuestionSet } from '../interfaces/EmployerWorker.interface'
+import { EmployerWorkerInterface, GetQuestionSet, GetSkills } from '../interfaces/EmployerWorker.interface'
 import { EmailId } from "../types/Employer.types"
 import { BasicResponse } from "../interfaces/Shared.interface"
 import { QuestionInterface } from "../interfaces/Question.interface"
 import { convert } from 'html-to-text'
+import uniqBy from 'lodash'
 
 class EmployerWorker implements EmployerWorkerInterface {
 
@@ -38,6 +39,23 @@ class EmployerWorker implements EmployerWorkerInterface {
 
             return {
                 status: true,
+            }
+        }
+        catch ( error ) {
+            return {
+                status: false,
+                error: error.message,
+            }
+        }
+    }
+
+    async getSkills ( email: EmailId ): Promise<GetSkills> {
+        try {
+            const result = await Question.find( { email } )
+
+            return {
+                status: true,
+                skills: uniqBy( result.map( job => job.topic ) ),
             }
         }
         catch ( error ) {

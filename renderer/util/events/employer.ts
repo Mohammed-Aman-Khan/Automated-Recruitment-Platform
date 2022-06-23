@@ -6,4 +6,6 @@ export const EMPLOYER_EVENTS = {
 
     ADD_QUESTION: ipcCheck( async ( ...args ) => JSON.parse( await ipc.invoke( 'add-question', ...args ) ) ),
 
+    GET_SKILLS: ipcCheck( async ( ...args ) => JSON.parse( await ipc.invoke( 'get-skills', ...args ) ) ),
+
 }

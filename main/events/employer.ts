@@ -11,4 +11,8 @@ export const EMPLOYER_EVENTS = [
         name: 'add-question',
         callback: employer.addQuestion
     },
+    {
+        name: 'get-skills',
+        callback: employer.getSkills,
+    }
 ]

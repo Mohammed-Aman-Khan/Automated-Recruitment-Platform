@@ -38,9 +38,25 @@ const useRequests = () => {
             .catch( error => showError( error.message ) )
     }, [ email, dispatch, getQuestionSet ] )
 
+    const getSkills = useCallback( question => {
+        EMPLOYER_EVENTS
+            .GET_SKILLS( email )
+            .then( response => {
+                if ( !response.status ) {
+                    showError( response.error )
+                }
+                else {
+                    showSuccess( 'Question added' )
+                    getQuestionSet()
+                }
+            } )
+            .catch( error => showError( error.message ) )
+    }, [ email, dispatch ] )
+
     return {
         getQuestionSet,
         addQuestion,
+        getSkills,
     }
 }
 

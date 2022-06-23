@@ -9,9 +9,11 @@ import Chip from '@mui/material/Chip'
 
 const initialSkill = ''
 
-const Qualification = ( {
-    skills,
-    setSkills,
+const Skills = ( {
+    label = 'Skills',
+    skills = [],
+    setSkills = newSkills => { },
+    transparent = true,
 } ) => {
 
     const [ newSkill, setNewSkill ] = useImmer( initialSkill )
@@ -38,12 +40,12 @@ const Qualification = ( {
     return <>
         <Paper
             variant='outlined'
-            sx={{ borderRadius: '20px', padding: '20px' }}
+            sx={{ borderRadius: '20px', padding: '20px', ...( transparent ? { backgroundColor: 'transparent' } : {} ) }}
         >
             <Typography
                 variant='h6'
             >
-                Skills
+                {label}
             </Typography>
             <br />
             <form
@@ -82,4 +84,4 @@ const Qualification = ( {
     </>
 }
 
-export default Qualification
+export default Skills

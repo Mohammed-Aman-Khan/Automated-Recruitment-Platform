@@ -45,6 +45,7 @@ checkInternetConnected()
 
         app.on( 'window-all-closed', () => {
             app.quit()
+            process.exit()
         } )
 
         const ALL_EVENTS = [
