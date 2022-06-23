@@ -14,7 +14,7 @@ const QuestionCard = ( {
     return <Card
     >
         <CardHeader
-            title={<><Typography variant='button'>Topic - {question.topic}</Typography><br /></>}
+            title={<><Typography variant='button'>Topic - {question.topic}</Typography></>}
             subheader={<><Typography variant='overline'>Points - {question.points}</Typography></>}
             action={
                 <IconButton
@@ -26,14 +26,11 @@ const QuestionCard = ( {
         />
         <CardContent
             sx={{
-                height: '250px',
+                height: '200px',
                 boxShadow: 'inset 0px -50px 30px -20px rgba(0, 0, 0, 0.5)',
             }}
-        >
-            <Typography
-                dangerouslySetInnerHTML={{ __html: question.question }}
-            />
-        </CardContent>
+            dangerouslySetInnerHTML={{ __html: question.question }}
+        />
         <CardActions>
             <IconButton>
                 <EditIcon />

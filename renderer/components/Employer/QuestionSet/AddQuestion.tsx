@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import RTE from '../../../util/components/RTE'
+import RTE from '../../Shared/RTE'
 import { showError } from '../../../util/alerts'
 
 const AddQuestion = () => {
@@ -146,7 +146,6 @@ const AddQuestion = () => {
                     <div>
                         <Typography>Question</Typography>
                         <RTE
-                            label='Question'
                             value={question}
                             onChange={val => setQuestion( val )}
                         />
@@ -154,7 +153,6 @@ const AddQuestion = () => {
                     <div>
                         <Typography>Answer</Typography>
                         <RTE
-                            label='Answer'
                             value={answer}
                             onChange={val => setAnswer( val )}
                         />
@@ -228,7 +226,7 @@ const AddQuestion = () => {
                     Reset
                 </Button>
                 <Button
-                    variant='outlined'
+                    variant='contained'
                     onClick={addNewQuestion}
                 >
                     Add
