@@ -1,13 +1,13 @@
 import { useCallback } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useAppDispatch,useAppSelector } from "../util/redux"
 import { EMPLOYER_EVENTS } from "../../util/events/employer"
 import { showError, showSuccess } from "../../util/alerts"
 import { setQuestionSet } from "../../redux/QuestionSetSlice"
 
 const useRequests = () => {
 
-    const dispatch = useDispatch()
-    const email = useSelector( state => state.auth.email )
+    const dispatch = useAppDispatch()
+    const email = useAppSelector( state => state.auth.email )
 
     const getQuestionSet = useCallback( () => {
         EMPLOYER_EVENTS

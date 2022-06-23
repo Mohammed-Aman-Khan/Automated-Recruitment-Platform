@@ -1,4 +1,5 @@
-import { Provider, useDispatch } from 'react-redux'
+import { Provider } from 'react-redux'
+import { useAppDispatch } from '../hooks/util/redux'
 import Store from '../redux'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
@@ -37,7 +38,7 @@ const LayoutWrapper = ( { path = "", children } ) => {
 
 const UtilWrapper = ( { children } ) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [ stateLoaded, setStateLoaded ] = useImmer( false )
 
     useEffect( () => {

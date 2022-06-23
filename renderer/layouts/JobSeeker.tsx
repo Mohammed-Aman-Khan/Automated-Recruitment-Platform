@@ -17,7 +17,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../hooks/util/redux'
 import { resetAuth } from '../redux/AuthSlice'
 import Link from 'next/link'
 
@@ -74,7 +74,7 @@ const DrawerHeader = styled( 'div' )( ( { theme } ) => ( {
 export default function PersistentDrawerLeft ( { children } ) {
 
     const router = useRouter()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const theme = useTheme()
     const [ open, setOpen ] = useState( false )
 
@@ -87,7 +87,7 @@ export default function PersistentDrawerLeft ( { children } ) {
     }
 
     const logout = () => {
-        dispatch( resetAuth() )
+        dispatch( resetAuth({}) )
         router.replace( '/' )
     }
 

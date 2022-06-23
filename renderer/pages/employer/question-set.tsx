@@ -1,6 +1,6 @@
 import { useImmer } from 'use-immer'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../hooks/util/redux'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Grid from '@mui/material/Grid'
@@ -22,7 +22,7 @@ const AddQuestion = dynamic(
 const QuestionSet = () => {
 
     const { getQuestionSet } = useRequests()
-    const questionSet = useSelector( state => state.questionSet )
+    const questionSet = useAppSelector( state => state.questionSet )
     const [ current, setCurrent ] = useImmer( null )
 
     useEffect( getQuestionSet, [] )

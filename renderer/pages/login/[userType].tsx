@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { useEffect } from 'react'
 import { AUTH_EVENTS } from '../../util/events/auth'
-import { useDispatch } from 'react-redux'
 import { setAuth } from '../../redux/AuthSlice'
 import isEqual from 'lodash/isEqual'
 import capitalize from 'lodash/capitalize'
@@ -16,12 +15,13 @@ import Head from 'next/head'
 import { useImmer } from 'use-immer'
 import { showError } from '../../util/alerts'
 import Stack from '@mui/material/Stack'
+import { useAppDispatch } from '../../hooks/util/redux'
 
 export default () => {
 
     const router = useRouter()
     const { query } = router
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const userType = query.userType ? String( query.userType ).toUpperCase() : ''
     const [ email, setEmail ] = useImmer( '' )
     const [ password, setPassword ] = useImmer( '' )

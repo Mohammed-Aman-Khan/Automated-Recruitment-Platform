@@ -3,12 +3,12 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../hooks/util/redux'
 
 export default () => {
 
     const router = useRouter()
-    const { loggedIn, userType } = useSelector( state => state.auth )
+    const { loggedIn, userType } = useAppSelector( state => state.auth )
 
     if ( loggedIn && userType ) {
         router.replace( `/${ userType.toLowerCase() }` )

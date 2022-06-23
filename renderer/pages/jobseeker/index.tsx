@@ -17,7 +17,7 @@ import toast from 'react-hot-toast'
 import capitalize from 'lodash/capitalize'
 import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'lodash/isEqual'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../hooks/util/redux'
 import { useEffect } from 'react'
 import useRequests from '../../hooks/JobSeeker/useRequests'
 
@@ -56,7 +56,7 @@ const initialState = {
 
 export default () => {
 
-    const myDetails = useSelector( state => state.myDetails )
+    const myDetails = useAppSelector( state => state.myDetails )
     const {
         getMyDetails,
         saveMyDetails,

@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useAppDispatch,useAppSelector } from "../util/redux"
 import { AUTH_EVENTS } from "../../util/events/auth"
 import { JOBSEEKER_EVENTS } from "../../util/events/jobseeker"
 import { showError, showSuccess } from "../../util/alerts"
@@ -7,8 +7,8 @@ import { setMyDetails } from "../../redux/MyDetailsSlice"
 
 const useRequests = () => {
 
-    const dispatch = useDispatch()
-    const email = useSelector( state => state.auth.email )
+    const dispatch = useAppDispatch()
+    const email = useAppSelector( state => state.auth.email )
 
     const getMyDetails = useCallback( () => {
         JOBSEEKER_EVENTS
