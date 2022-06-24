@@ -1,5 +1,4 @@
 import { useImmer } from 'use-immer'
-import { useEffect } from 'react'
 import { useAppSelector } from '../../hooks/util/redux'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -9,7 +8,6 @@ import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import useRequests from '../../hooks/Employer/useRequests'
 import QuestionCard from '../../components/Employer/QuestionSet/QuestionCard'
 import Stack from '@mui/material/Stack'
 import { format } from '../../util/helper'
@@ -21,11 +19,8 @@ const AddQuestion = dynamic(
 
 const QuestionSet = () => {
 
-    const { getQuestionSet } = useRequests()
     const questionSet = useAppSelector( state => state.questionSet )
     const [ current, setCurrent ] = useImmer( null )
-
-    useEffect( getQuestionSet, [] )
 
     return <>
         <Head>

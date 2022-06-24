@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose'
+import { Question } from './Question.types'
 
 export type EmployerEmail = string
 
@@ -12,4 +13,7 @@ export type AppliedCandidate = mongoose.Types.ObjectId
 
 export type InterviewCompleted = mongoose.Types.ObjectId
 
-export type InterviewRound = mongoose.Schema.Types.Mixed
+export type InterviewRound = {
+    name: string,
+    questions: Question[]
+}

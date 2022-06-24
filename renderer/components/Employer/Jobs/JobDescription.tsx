@@ -2,7 +2,12 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Skills from '../../Shared/Skills'
-import RTE from '../../Shared/RTE'
+import dynamic from 'next/dynamic'
+
+const RTE = dynamic(
+    () => import( '../../Shared/RTE' ),
+    { ssr: false }
+)
 
 const JobDescription = ( {
     role, setRole,

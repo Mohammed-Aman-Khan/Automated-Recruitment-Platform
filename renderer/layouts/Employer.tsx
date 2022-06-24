@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { useAppDispatch } from '../hooks/util/redux'
 import { resetAuth } from '../redux/AuthSlice'
 import Link from 'next/link'
+import useRequests from '../hooks/Employer/useRequests'
 
 const drawerWidth = 350
 
@@ -77,6 +78,7 @@ export default function PersistentDrawerLeft ( { children } ) {
     const router = useRouter()
     const theme = useTheme()
     const dispatch = useAppDispatch()
+    const { getQuestionSet, getJobs } = useRequests()
     const [ open, setOpen ] = useState( false )
 
     const handleDrawerOpen = () => {
@@ -88,9 +90,14 @@ export default function PersistentDrawerLeft ( { children } ) {
     }
 
     const logout = () => {
-        dispatch( resetAuth({}) )
+        dispatch( resetAuth( {} ) )
         router.replace( '/' )
     }
+
+    useEffect( () => {
+        getQuestionSet()
+        getJobs()
+    }, [] )
 
     return (
         <Box sx={{ display: 'flex' }}>

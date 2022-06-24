@@ -1,5 +1,5 @@
-import useRequests from '../../../hooks/Employer/useRequests'
 import { useImmer } from 'use-immer'
+import useRequests from '../../../hooks/Employer/useRequests'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import Dialog from '@mui/material/Dialog'
@@ -17,6 +17,8 @@ import { showError } from '../../../util/alerts'
 const steps = [ 'Job Description', 'Interview Configuration', 'Review & Finalize' ]
 
 const AddJobOpening = () => {
+
+    const { addNewJob } = useRequests()
 
     const [ openDialog, setOpenDialog ] = useImmer( false )
     const [ activeStep, setActiveStep ] = useImmer( 0 )
@@ -75,6 +77,19 @@ const AddJobOpening = () => {
                 setActiveStep( activeStep + 1 )
                 break
             case 3:
+                addNewJob( {
+                    role,
+                    description,
+                    requiredSkills: skills,
+                    interviewRounds,
+                }, () => {
+                    setOpenDialog( false )
+                    setActiveStep( 0 )
+                    setRole( '' )
+                    setDescription( '' )
+                    setSkills( [] )
+                    setInterviewRounds( [] )
+                } )
                 setActiveStep( 0 )
                 break
             default:

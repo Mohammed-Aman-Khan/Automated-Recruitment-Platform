@@ -13,8 +13,13 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import RTE from '../../Shared/RTE'
+import dynamic from 'next/dynamic'
 import { showError } from '../../../util/alerts'
+
+const RTE = dynamic(
+    () => import( '../../Shared/RTE' ),
+    { ssr: false }
+)
 
 const AddQuestion = () => {
 

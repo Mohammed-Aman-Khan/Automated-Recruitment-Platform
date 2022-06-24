@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AuthSlice from './AuthSlice'
+import JobsSlice from './JobsSlice'
 import MyDetailsSlice from './MyDetailsSlice'
 import QuestionSetSlice from './QuestionSetSlice'
 
@@ -8,13 +9,16 @@ const Store = configureStore( {
         auth: AuthSlice.reducer,
         myDetails: MyDetailsSlice.reducer,
         questionSet: QuestionSetSlice.reducer,
+        jobs: JobsSlice.reducer,
     },
 } )
 
 Store.subscribe( () => {
-    Object.entries( Store.getState() ).map( ( [ key, value ] ) => {
-        localStorage.setItem( key, JSON.stringify( value ) )
-    } )
+    Object
+        .entries( Store.getState() )
+        .forEach( ( [ key, value ] ) => {
+            localStorage.setItem( key, JSON.stringify( value ) )
+        } )
 } )
 
 export type RootState = ReturnType<typeof Store.getState>

@@ -1,4 +1,4 @@
-import { RequiredExperience, RequiredSkill, Type } from "../types/Job.types"
+import { RequiredSkill, } from "../types/Job.types"
 import { EmailId } from "../types/JobSeeker.types"
 import { JobInterface } from "./Job.interface"
 import { JobSeekerInterface } from "./JobSeeker.interface"
@@ -6,8 +6,6 @@ import { BasicResponse } from "./Shared.interface"
 import { MongoObjectId } from "../types/Shared.types"
 
 export interface JobFilter {
-    type?: Type[],
-    requiredExperience?: RequiredExperience,
     requiredSkills?: RequiredSkill[],
 }
 
