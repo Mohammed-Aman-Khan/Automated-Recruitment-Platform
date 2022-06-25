@@ -185,7 +185,7 @@ const InterviewConfiguration = ( {
                                                                 marks
                                                                 min={1}
                                                                 max={3}
-                                                                onChange={e => setConfiguation( 'level', Number( e.target.value ), roundIndex, configurationIndex )}
+                                                                onChange={(e, value) => setConfiguation( 'level', Number( value ), roundIndex, configurationIndex )}
                                                             />
                                                         </div>
                                                         <div>
