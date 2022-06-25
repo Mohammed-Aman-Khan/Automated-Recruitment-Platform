@@ -14,7 +14,6 @@ class JobSeekerWorker implements JobSeekerWorkerInterface {
             return {
                 status: true,
                 jobs: result,
-
             }
         }
         catch ( error ) {

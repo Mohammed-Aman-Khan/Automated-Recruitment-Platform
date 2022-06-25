@@ -1,5 +1,8 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useAppDispatch } from '../hooks/util/redux'
+import { resetAuth } from '../redux/AuthSlice'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -15,11 +18,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import Button from '@mui/material/Button'
-import { useRouter } from 'next/router'
 import Grid from '@mui/material/Grid'
-import { useAppDispatch } from '../hooks/util/redux'
-import { resetAuth } from '../redux/AuthSlice'
 import Link from 'next/link'
+import useRequests from '../hooks/JobSeeker/useRequests'
 
 const drawerWidth = 350
 
@@ -76,6 +77,7 @@ export default function PersistentDrawerLeft ( { children } ) {
     const router = useRouter()
     const dispatch = useAppDispatch()
     const theme = useTheme()
+    const { getJobs } = useRequests()
     const [ open, setOpen ] = useState( false )
 
     const handleDrawerOpen = () => {
@@ -87,9 +89,13 @@ export default function PersistentDrawerLeft ( { children } ) {
     }
 
     const logout = () => {
-        dispatch( resetAuth({}) )
+        dispatch( resetAuth( {} ) )
         router.replace( '/' )
     }
+
+    useEffect( () => {
+        getJobs()
+    }, [] )
 
     return (
         <Box sx={{ display: 'flex' }}>

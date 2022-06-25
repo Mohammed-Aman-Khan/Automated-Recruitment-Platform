@@ -4,19 +4,19 @@ const employer = new EmployerWorker()
 
 export const EMPLOYER_EVENTS = [
     {
-        name: 'get-question-set',
+        name: 'employer-get-question-set',
         callback: employer.getQuestionSet,
     },
     {
-        name: 'add-question',
+        name: 'employer-add-question',
         callback: employer.addQuestion,
     },
     {
-        name: 'get-jobs',
+        name: 'employer-get-jobs',
         callback: employer.getJobs,
     },
     {
-        name: 'add-new-job',
+        name: 'employer-add-new-job',
         callback: employer.addNewJob,
     },
 ]
