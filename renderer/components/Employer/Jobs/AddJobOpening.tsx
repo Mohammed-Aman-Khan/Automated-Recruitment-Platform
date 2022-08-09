@@ -16,7 +16,9 @@ import { showError } from '../../../util/alerts'
 
 const steps = [ 'Job Description', 'Interview Configuration', 'Review & Finalize' ]
 
-const AddJobOpening = () => {
+const AddJobOpening = ( {
+    getJobs = () => { },
+} ) => {
 
     const { addNewJob } = useRequests()
 
@@ -89,6 +91,7 @@ const AddJobOpening = () => {
                     setDescription( '' )
                     setSkills( [] )
                     setInterviewRounds( [] )
+                    getJobs()
                 } )
                 setActiveStep( 0 )
                 break

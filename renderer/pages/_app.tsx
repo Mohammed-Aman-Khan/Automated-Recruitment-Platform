@@ -24,7 +24,9 @@ const LayoutWrapper = ( { path = "", children } ) => {
             ?
             JobSeekerLayout
             :
-            path.startsWith( '/employer' )
+            path.startsWith( '/employer' ) && (
+                !path.startsWith( '/employer/job' )
+            )
                 ?
                 EmployerLayout
                 :

@@ -24,7 +24,6 @@ const Skills = ( {
     skills = [],
     transparent = true,
 } ) => {
-
     return <Paper
         variant='outlined'
         sx={{ borderRadius: '20px', padding: '20px', ...( transparent ? { backgroundColor: 'transparent' } : {} ) }}
